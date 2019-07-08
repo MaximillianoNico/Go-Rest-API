@@ -5,6 +5,8 @@
 *.so
 *.dylib
 
+.Go-Rest-API
+
 # Test binary, build with `go test -c`
 *.test
 
