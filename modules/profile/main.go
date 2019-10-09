@@ -31,11 +31,38 @@ type User struct {
 var experience []Experience
 
 func GetProfiles(w http.ResponseWriter, r *http.Request) {
+	experience := append(experience, Experience{
+		ID:    "124dfaw3aAg3",
+		Title: "Front End Engineer",
+		Desc:  "lorem ad gip sum",
+		User: &User{
+			Firstname: "Maximilliano",
+			Lastname:  "Lolong",
+			Email:     "maximilliano@okadoc.com",
+			Password:  "max1234",
+		},
+		Division: "IT Dev",
+		Position: "Junior Dev",
+	})
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(experience)
 }
 
 func GetProfileById(w http.ResponseWriter, r *http.Request) {
+	experience := append(experience, Experience{
+		ID:    "124dfaw3aAg3",
+		Title: "Front End Engineer",
+		Desc:  "lorem ad gip sum",
+		User: &User{
+			Firstname: "Maximilliano",
+			Lastname:  "Lolong",
+			Email:     "maximilliano@okadoc.com",
+			Password:  "max1234",
+		},
+		Division: "IT Dev",
+		Position: "Junior Dev",
+	})
+
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r) // get params
 
