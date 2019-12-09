@@ -1,6 +1,4 @@
-package auth
-
-// db "./app/common/libs/db.go"
+package models
 
 type Account struct {
 	Username string `json:"username"`

@@ -3,39 +3,21 @@ package profile
 import (
 	// db "./app/common/libs/db.go"
 	"encoding/json"
+	models "github.com/MaximillianoNico/Go-Rest-API/internal/entity/models"
+	"github.com/gorilla/mux"
 	"math/rand"
 	"net/http"
 	"strconv"
-
-	"github.com/gorilla/mux"
 )
 
-// ...Experience
-type Experience struct {
-	ID       string `json:"id"`
-	Title    string `json:"title"`
-	Desc     string `json:"desc"`
-	User     *User  `json:"user"`
-	Position string `json:"position"`
-	Division string `json:"division"`
-}
-
-// ...User
-type User struct {
-	Firstname string `json:"firstname"`
-	Lastname  string `json:"lastname"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-}
-
-var experience []Experience
+var experience []models.Experience
 
 func GetProfiles(w http.ResponseWriter, r *http.Request) {
-	experience := append(experience, Experience{
+	experience := append(experience, models.Experience{
 		ID:    "124dfaw3aAg3",
 		Title: "Front End Engineer",
 		Desc:  "lorem ad gip sum",
-		User: &User{
+		User: &models.User{
 			Firstname: "Maximilliano",
 			Lastname:  "Lolong",
 			Email:     "maximilliano@okadoc.com",
@@ -49,11 +31,11 @@ func GetProfiles(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetProfileById(w http.ResponseWriter, r *http.Request) {
-	experience := append(experience, Experience{
+	experience := append(experience, models.Experience{
 		ID:    "124dfaw3aAg3",
 		Title: "Front End Engineer",
 		Desc:  "lorem ad gip sum",
-		User: &User{
+		User: &models.User{
 			Firstname: "Maximilliano",
 			Lastname:  "Lolong",
 			Email:     "maximilliano@okadoc.com",
@@ -73,12 +55,12 @@ func GetProfileById(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	json.NewEncoder(w).Encode(&Experience{})
+	json.NewEncoder(w).Encode(&models.Experience{})
 }
 
 func UpdateOrAddExperience(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var experiences Experience
+	var experiences models.Experience
 	_ = json.NewDecoder(r.Body).Decode(&experiences)
 	experiences.ID = strconv.Itoa(rand.Intn(10000000)) // mock data id - not safe
 	experience = append(experience, experiences)

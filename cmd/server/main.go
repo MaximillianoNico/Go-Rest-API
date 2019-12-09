@@ -4,7 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	profile "github.com/MaximillianoNico/GO-REST-API/modules/profile"
+	// profile "github.com/MaximillianoNico/Go-Rest-API/modules/profile"
+	"github.com/MaximillianoNico/Go-Rest-API/internal/controller/profile"
 
 	"github.com/gorilla/mux"
 )
