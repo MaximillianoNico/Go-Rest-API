@@ -1,7 +1,26 @@
-package models
+package account
 
-type Account struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Role     string `json:"role"`
+import (
+	// db "./app/common/libs/db.go"
+	"encoding/json"
+	"net/http"
+
+	models "github.com/MaximillianoNico/Go-Rest-API/internal/entity/models"
+)
+
+var account []models.Account
+
+func SignInWithEmailAndPass(w http.ResponseWriter, r *http.Request) {
+	login := append(account, models.Account{
+		Username: "ok",
+		Password: "ok",
+		Role:     "admin",
+		Token:    "adawdawdawawd",
+	})
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(login)
+}
+
+func SignInWithProvider(w http.ResponseWriter, r *http.Request) {
+	//
 }
