@@ -1,2 +1,2 @@
 # Go-Rest-API
-Simple Rest API - GO Language
+Simple Rest API using Gin Framework Go language
