@@ -1,34 +1,32 @@
 package main
 
 import (
-	"os"
-	"log"
 	"flag"
-	"net/http"
+	"github.com/MaximillianoNico/Go-Rest-API/internal/httpserver/routers"
 	"github.com/joho/godotenv"
-	"github.com/MaximillianoNico/Go-Rest-API/routers"
+	"log"
+	"net/http"
+	"os"
 )
 
 func LoadEnv() {
-	mode := flag.String("mode", "development", "mode go run server");
+	mode := flag.String("mode", "development", "mode go run server")
 	flag.Parse()
-	
 
-	if ( *mode == "production" || *mode == "staging") {
-		err := godotenv.Load(".env."+*mode)
+	if *mode == "production" || *mode == "staging" {
+		err := godotenv.Load(".env." + *mode)
 
 		if err != nil {
 			log.Fatal("Error loading .env file")
 		}
 	} else {
 		err := godotenv.Load()
-		
+
 		if err != nil {
 			log.Fatal("Error loading .env file")
 		}
 	}
 }
-
 
 // @title Swagger Example API
 // @version 1.0
@@ -75,19 +73,19 @@ func LoadEnv() {
 
 // @x-extension-openapi {"example": "value on a json format"}
 
-func main(){
+func main() {
 	LoadEnv() // load environment
 
-	routersInit := routers.InitRouters()
-	port := ":"+os.Getenv("API_PORT")
+	routersInit := routers.InitRouters() // init all endpoint
+	port := ":" + os.Getenv("API_PORT")
 
 	server := &http.Server{
-		Addr			: port,
-		Handler			: routersInit,
+		Addr:    port,
+		Handler: routersInit,
 	}
 
 	log.Printf("[info] start http server listening %s", os.Getenv("API_PORT"))
-	
+
 	err := server.ListenAndServe()
 	if err != nil {
 		log.Printf("Server err: %v", err)

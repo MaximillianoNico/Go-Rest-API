@@ -1,4 +1,4 @@
-package api
+package controller
 
 import (
 	"net/http"
@@ -41,4 +41,3 @@ func RouteWithParams(c *gin.Context) {
 		"message": message,
 	})
 }
-
