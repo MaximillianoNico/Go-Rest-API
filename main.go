@@ -1,31 +1,96 @@
 package main
 
 import (
+	"os"
 	"log"
+	"flag"
 	"net/http"
-
-	// profile "github.com/MaximillianoNico/Go-Rest-API/modules/profile"
-	// "github.com/MaximillianoNico/Go-Rest-API/pkg/mongo"
-	"github.com/MaximillianoNico/Go-Rest-API/internal/controller/profile"
-	"github.com/MaximillianoNico/Go-Rest-API/internal/controller/account"
-	// "github.com/MaximillianoNico/Go-Rest-API/internal/config/env"
-
-	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
+	"github.com/MaximillianoNico/Go-Rest-API/routers"
 )
 
-func main() {
-
-	r := mux.NewRouter()
+func LoadEnv() {
+	mode := flag.String("mode", "development", "mode go run server");
+	flag.Parse()
 	
-	// Routes Profile User
-	r.HandleFunc("/v1/profiles", profile.GetProfiles).Methods("GET")
-	r.HandleFunc("/v1/profile/{id}", profile.GetProfileById).Methods("GET")
-	r.HandleFunc("/v1/profile/experience", profile.UpdateOrAddExperience).Methods("POST")
-	r.HandleFunc("/v1/profile/project", profile.UpdateProject).Methods("POST")
-	r.HandleFunc("/v1/profile/education", profile.UpdateEducation).Methods("POST")
 
-	// Routes Authentication
-	r.HandleFunc("/v1/auth/signin", account.SignInWithEmailAndPass).Methods("POST")
+	if ( *mode == "production" || *mode == "staging") {
+		err := godotenv.Load(".env."+*mode)
 
-	log.Fatal(http.ListenAndServe(":8080", r))
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	} else {
+		err := godotenv.Load()
+		
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	}
+}
+
+
+// @title Swagger Example API
+// @version 1.0
+// @description This is a sample server celler server.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8080
+// @BasePath /api/v1
+// @query.collection.format multi
+
+// @securityDefinitions.basic BasicAuth
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+
+// @securitydefinitions.oauth2.application OAuth2Application
+// @tokenUrl https://example.com/oauth/token
+// @scope.write Grants write access
+// @scope.admin Grants read and write access to administrative information
+
+// @securitydefinitions.oauth2.implicit OAuth2Implicit
+// @authorizationurl https://example.com/oauth/authorize
+// @scope.write Grants write access
+// @scope.admin Grants read and write access to administrative information
+
+// @securitydefinitions.oauth2.password OAuth2Password
+// @tokenUrl https://example.com/oauth/token
+// @scope.read Grants read access
+// @scope.write Grants write access
+// @scope.admin Grants read and write access to administrative information
+
+// @securitydefinitions.oauth2.accessCode OAuth2AccessCode
+// @tokenUrl https://example.com/oauth/token
+// @authorizationurl https://example.com/oauth/authorize
+// @scope.admin Grants read and write access to administrative information
+
+// @x-extension-openapi {"example": "value on a json format"}
+
+func main(){
+	LoadEnv() // load environment
+
+	routersInit := routers.InitRouters()
+	port := ":"+os.Getenv("API_PORT")
+
+	server := &http.Server{
+		Addr			: port,
+		Handler			: routersInit,
+	}
+
+	log.Printf("[info] start http server listening %s", os.Getenv("API_PORT"))
+	
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Printf("Server err: %v", err)
+	}
+
 }
